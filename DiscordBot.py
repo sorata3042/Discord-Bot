@@ -1,8 +1,7 @@
-import discord
-import time
-import os
+import discord, os, sys
 from discord.ext import commands
 
+#opens the token text file and reads it to obtain the bot token
 def read_token():
     with open("token.txt", "r") as f:
         lines = f.readlines()
@@ -11,27 +10,22 @@ token = read_token()
 
 client = commands.Bot(command_prefix = '!')
 
+#Loads in the various cogs in the cogs folder
+if __name__ == "__main__":
+    for filename in os.listdir("./cogs"):
+        try:
+            #checks if the files end in .py and loads them if they are
+            if filename.endswith(".py"):
+                client.load_extension(f"cogs.{filename[:-3]}")
+        except Exception as e:
+            print (f"Failed to load extension {extension}", file = sys.stderr)
+            #traceback.print_exc()
+
+#alters the bots status and activity
 @client.event
 async def on_ready():
+    await client.change_presence(status=discord.Status.idle, activity=discord.Game("A GAME"))
     print("READY.")
-
-@client.command(aliases=["hi", "greetings", "yo"])
-async def hello(ctx):
-    time.sleep(0.5)
-    await ctx.send("GREETINGS.")
-
-@client.command()
-async def clear(ctx, amount = 10):
-    await ctx.channel.purge(limit = amount)
-
-@client.event
-async def on_message(message):
-    banned_words = ["fuck", "shit", "kys"]
-    for word in banned_words:
-        if message.content.count(word) > 0:
-            print("BANNED WORD STATED")
-            await message.channel.purge(limit=1)
-    await client.process_commands(message)
 
 @client.command()
 async def mocha(ctx):
@@ -48,11 +42,6 @@ async def unload(ctx, extension):
 
 @client.command()
 async def reload(ctx, extension):
-    client.unload_extension(f"cogs.{extension}")
-    client.load_extension(f"cogs.{extension}")
-
-for filename in os.listdir("./cogs"):
-    if filename.endswith(".py"):
-        client.load_extension(f"cogs.{filename[:-3]}")
+    client.reload_extension(f"cogs.{extension}")
 
 client.run(token)
