@@ -18,7 +18,7 @@ if __name__ == "__main__":
             if filename.endswith(".py"):
                 client.load_extension(f"cogs.{filename[:-3]}")
         except Exception as e:
-            print (f"Failed to load extension {extension}", file = sys.stderr)
+            print (f"Failed to load extension {filename}", file = sys.stderr)
             #traceback.print_exc()
 
 #alters the bots status and activity
