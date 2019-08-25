@@ -13,9 +13,15 @@ class Tests(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx):
-        print ("PONG")
         await ctx.send(f"PONG {round(self.client.latency *1000)} ms")
 
+    @commands.command()
+    async def yah(self, ctx):
+        await ctx.send("YEET")
+
+    @commands.command()
+    async def yee(self, ctx):
+        await ctx.send("haw")
 
 def setup(client):
     client.add_cog(Tests(client))

@@ -1,4 +1,4 @@
-import discord, youtube_dl
+import discord, youtube_dl, os
 from discord.ext import commands
 from discord.utils import get
 
@@ -32,9 +32,45 @@ class Audio(commands.Cog):
             await ctx.send(f"The bot is unable to leave {channel}")
 
     @commands.command(pass_context=True)
-    async def play(self, ctx, url):
-        pass
+    async def play(self, ctx, *, url):
+        song = os.path.isfile("song.mp3")
+        try:
+            if song:
+                os.remove("song.mp3")
+                print ("Removed old song file")
+        except PermissionError:
+            await ctx.send ("Error: Music Playing")
 
+        await ctx.send ("Queuing the song")
+
+        voice = get (self.client.voice_clients, guild=ctx.guild)
+
+        ydl_opts = {
+        "default_search": "auto",
+        "format": "bestaudio/best",
+        "postprocessors": [{
+            "key": "FFmpegExtractAudio",
+            "preferredcodec": "mp3",
+            "preferredquality": "192",
+            }],
+        }
+
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            print("Downloading mp3 file")
+            ydl.download([url])
+
+        for filename in os.listdir("./"):
+            if filename.endswith(".mp3"):
+                song_name = filename
+                os.rename(filename, "song.mp3")
+
+        source = discord.FFmpegPCMAudio("song.mp3")
+        voice.play(source, after = lambda e: print (f"{song_name} has finished playing"))
+        voice.source = discord.PCMVolumeTransformer(voice.source)
+        voice.source.volume = 0.5
+
+        #new_song_name = filename.replit("-", 2)
+        #await ctx.send(f"Playing {new_song_name}")
 
 def setup(client):
     client.add_cog(Audio(client))

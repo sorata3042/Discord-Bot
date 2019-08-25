@@ -19,6 +19,7 @@ if __name__ == "__main__":
                 client.load_extension(f"cogs.{filename[:-3]}")
         except Exception as e:
             print (f"Failed to load extension {filename}", file = sys.stderr)
+    print(" All extensions have loaded")
             #traceback.print_exc()
 
 #alters the bots status and activity
@@ -28,20 +29,18 @@ async def on_ready():
     print("READY.")
 
 @client.command()
-async def mocha(ctx):
-    await ctx.send("HERE IS A PHOTO OF THE DESIRED CANINE")
-    await ctx.send(file=discord.File('mocha1.jpeg'))
-
-@client.command()
 async def load(ctx, extension):
     client.load_extension(f"cogs.{extension}")
+    print(f"{extension} has been loaded")
 
 @client.command()
 async def unload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
+    print(f"{extension} has been unloaded")
 
 @client.command()
 async def reload(ctx, extension):
     client.reload_extension(f"cogs.{extension}")
+    print(f"{extension} has been reloaded")
 
 client.run(token)

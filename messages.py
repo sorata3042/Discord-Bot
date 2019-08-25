@@ -14,6 +14,7 @@ class Messages(commands.Cog):
     async def clear(self, ctx, amount = 10):
         await ctx.channel.purge(limit = amount)
 
+#Was causing the bot to perfrom tasks twice
 """    @commands.Cog.listener()
     async def on_message(self, message):
         banned_words = ["fuck", "shit", "kys"]
