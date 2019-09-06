@@ -17,6 +17,12 @@ class Tests(commands.Cog):
     async def ping(self, ctx):
         await ctx.send(f"PONG {round(self.client.latency *1000)} ms")
 
+    #added github link for those that want to see the code 
+    @commands.command()
+    async def github(self, ctx):
+        await ctx.send(f"Here is my github link: https://github.com/sorata3042/Discord-Bot ")
+
+
 
 
 def setup(client):
