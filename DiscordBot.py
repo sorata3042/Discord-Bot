@@ -10,7 +10,7 @@ token = read_token()
 
 client = commands.Bot(command_prefix = '!')
 
-#Loads in the various cogs in the cogs folder
+#Loads in the various cogs(the sub files) in the cogs folder
 if __name__ == "__main__":
     for filename in os.listdir("./cogs"):
         try:
@@ -28,6 +28,7 @@ async def on_ready():
     await client.change_presence(status=discord.Status.idle, activity=discord.Game("A GAME"))
     print("READY.")
 
+#the following commands aid in troubleshooting the various cogs
 @client.command()
 async def load(ctx, extension):
     client.load_extension(f"cogs.{extension}")
@@ -43,4 +44,5 @@ async def reload(ctx, extension):
     client.reload_extension(f"cogs.{extension}")
     print(f"{extension} has been reloaded")
 
+#needs token.txt file to run
 client.run(token)
