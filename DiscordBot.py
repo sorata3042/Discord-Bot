@@ -1,3 +1,5 @@
+#Steven Chau
+
 import discord, os, sys
 from discord.ext import commands
 
@@ -6,9 +8,11 @@ def read_token():
     with open("token.txt", "r") as f:
         lines = f.readlines()
         return lines[0].strip()
+print("Token has been read")
 token = read_token()
 
 client = commands.Bot(command_prefix = '!')
+
 
 #Loads in the various cogs(the sub files) in the cogs folder
 if __name__ == "__main__":
@@ -17,9 +21,10 @@ if __name__ == "__main__":
             #checks if the files end in .py and loads them if they are
             if filename.endswith(".py"):
                 client.load_extension(f"cogs.{filename[:-3]}")
+                print(f"{filename} has loaded")
         except Exception as e:
             print (f"Failed to load extension {filename}", file = sys.stderr)
-    print(" All extensions have loaded")
+
             #traceback.print_exc()
 
 #alters the bots status and activity
