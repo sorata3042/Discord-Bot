@@ -42,13 +42,30 @@ def obtainImage(petName: str):
 
     albums = service.albums().list().execute()
     albums_list = albums.get('albums')
+
     dfalbums = pd.DataFrame(albums_list)
     album_id = dfalbums[dfalbums['title'] == petName]['id'].to_string(index=False).strip()
 
-    media_files = service.mediaItems().search(body={'albumId': album_id}).execute()['mediaItems']
-    #print(albums_list)
+    #initialize a list for all the items in a specific album
+    mediaItemList = []
+    pageToken = ""
+    #iterates through all pages in an album
+    while True:
+        body = {
+            "albumId": album_id,
+            "pageToken": pageToken if pageToken != "" else "",
+            "pageSize": 100
+        }
+        res = service.mediaItems().search(body=body).execute()
+        mediaItems = res.get('mediaItems', [])
+        mediaItemList.extend(mediaItems)
+        pageToken = res.get('nextPageToken')
+        if not pageToken:
+            break
+
+    #initialize a list of all the download urls of each item in mediaItemList
     images = []
-    for media_file in media_files:
+    for media_file in mediaItemList:
         #file_name = media_file['filename']
         download_url = media_file['baseUrl'] + '=d'
         images.append(download_url)
@@ -67,3 +84,6 @@ def download_file(url:str, file_name:str):
         with open(os.path.join(r'./temp', file_name), 'wb') as f:
             f.write(response.content)
             f.close()
+
+#obtainImage('Billy')
+#obtainImage('Mocha')
