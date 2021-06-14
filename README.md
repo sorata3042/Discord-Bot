@@ -1,5 +1,7 @@
 # Discord-Bot
 
+This repository is here to display the code used and is not completely functional; the bot would require other files such as those stated in requirements in order to function. My bot is currently hosted on Heroku. 
+
 ## Important Links
 Documentation for discord python api: [discord.py](https://discordpy.readthedocs.io/en/latest/index.html).
 
