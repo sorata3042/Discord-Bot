@@ -10,17 +10,20 @@ class Pictures(commands.Cog):
     #the following commands obtains an image from a google photos library
     @commands.command()
     async def mocha(self, ctx):
-        #print("Obtaining a mocha photo")
-        file_name = obtainImage('Mocha')
-        #print("Sending Mocha photo")
+        #displays a "is typing..." indicator for the bot
+        async with ctx.typing():
+            #print("Obtaining a mocha photo")
+            file_name = obtainImage('Mocha')
+            #print("Sending Mocha photo")
         await ctx.send("Mocha \n", file=discord.File("./temp/" + file_name))
         os.remove('temp' + '/' + file_name)
 
     @commands.command()
     async def billy(self, ctx):
-        #print("Obtaining a Billy photo")
-        file_name = obtainImage('Billy')
-        #print("Sending Billy photo")
+        async with ctx.typing():
+            #print("Obtaining a Billy photo")
+            file_name = obtainImage('Billy')
+            #print("Sending Billy photo")
         await ctx.send("Billy \n", file=discord.File("./temp/" + file_name))
         os.remove('temp' + '/' + file_name)
 
